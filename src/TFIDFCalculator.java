@@ -23,15 +23,25 @@ public class TFIDFCalculator {
     public double idf(ArrayList<DataModel> docs, String term) {
 
         double n = 0;
-        for (DataModel dm : docs) {
-            ArrayList<String> content = dm.getContent();
-            for (String word : content) {
-                if (term.equalsIgnoreCase(word)) {
-                    n++;
-                    break;
+        //try {
+            for (DataModel dm : docs) {
+
+                ArrayList<String> content = dm.getContent();
+                try {
+                    for (String word : content) {
+                        if (term.equalsIgnoreCase(word)) {
+                            n++;
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
-        }
+        //}
+       /* catch (NullPointerException e){
+            e.printStackTrace();
+        }*/
         return Math.log(docs.size() / n);
     }
 
