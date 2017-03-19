@@ -1,4 +1,5 @@
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 /**
  * Created by ishmam on 3/18/2017.
@@ -9,12 +10,20 @@ public class DataModel {
     private Path path;
     private boolean isPos;
     private boolean isTestData;
+    private ArrayList<String> content;
 
     public DataModel(Path path, boolean isPos) {
         this.path = path;
         this.isPos = isPos;
     }
 
+    public ArrayList<String> getContent() {
+        return content;
+    }
+
+    public void setContent(ArrayList<String> content) {
+        this.content = content;
+    }
     public Path getPath() {
         return path;
     }

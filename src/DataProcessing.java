@@ -80,4 +80,8 @@ public class DataProcessing {
         }
     }
 
+    public double idf(DataModel dm, String term){
+    return 0.0;
+    }
+
 }
