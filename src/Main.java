@@ -5,8 +5,10 @@ public class Main {
 
     public static final String positiveDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\pos";
     public static final String negativeDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\neg";
-    private static HashMap<String, Integer> trainingData;
-    private static HashMap<String, Integer> testingData;
+    private static HashMap<String, Integer> weightVector;
+    private static HashMap<String, Integer> defaultFeatureVector;
+    private ArrayList<DataModel> trainingDocs;
+    private ArrayList<DataModel> testingDocs;
 
     public static void main(String[] args) {
 
@@ -16,10 +18,23 @@ public class Main {
 
         DataProcessing dataProcessing = new DataProcessing(inputData);
         dataProcessing.runCrossValidation(1);
-        trainingData = dataProcessing.getTrainingData();
+        weightVector = dataProcessing.getWeightVector();
+        defaultFeatureVector = new HashMap<>(weightVector);
+
+        for(DataModel dm : inputData.getFileList()){
+            TFIDFCalculator tfidfCalculator = new TFIDFCalculator();
+            double sum = 0;
+            for(String word: dm.getContent()){
+                sum += tfidfCalculator.tfIdf(dm, dataProcessing.getTrainingDocs(), word);
+
+            }
+            System.out.println(sum);
+            System.out.println("File: " + dm.getPath());
+        }
+        /*trainingData = dataProcessing.getTrainingData();
         testingData = dataProcessing.getTestingData();
         Map<String, Integer> sortedTrainingData = sortMapByValue(trainingData);
-        Map<String, Integer> sortedTestingData = sortMapByValue(testingData);
+        Map<String, Integer> sortedTestingData = sortMapByValue(testingData);*/
         System.out.println("Hello");
     }
 

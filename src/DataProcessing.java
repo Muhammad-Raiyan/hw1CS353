@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by ishmam on 3/18/2017.
@@ -15,6 +12,7 @@ public class DataProcessing {
     private InputData inputData;
     HashMap<String, Integer> trainingData = new HashMap<String, Integer>();
     HashMap<String, Integer> testingData = new HashMap<String, Integer>();
+    HashMap<String, Integer> weightVector = new HashMap<String, Integer>();
 
     public DataProcessing(InputData inputData) {
         this.fileList = inputData.getFileList();
@@ -41,16 +39,16 @@ public class DataProcessing {
         }
     }
 
-    public HashMap<String, Integer> getTrainingData (){
+    public ArrayList<DataModel> getTrainingDocs (){
+        ArrayList<DataModel> trainingDocs = new ArrayList<>();
         for(DataModel file: fileList)
         {
             if(!file.isTestData()){
-                String review = inputData.readFile(file.getPath());
-                stringToHash(review, trainingData);
+                trainingDocs.add(file);
             }
         }
 
-        return trainingData;
+        return trainingDocs;
     }
 
     public HashMap<String, Integer> getTestingData (){
@@ -63,6 +61,24 @@ public class DataProcessing {
         });
 
         return testingData;
+    }
+
+    public HashMap<String, Integer> getWeightVector(){
+        for(DataModel file: fileList)
+        {
+            if(!file.isTestData()){
+                String review = inputData.readFile(file.getPath());
+                String[] words = review.split(" ");
+                file.setContent(new ArrayList<String>(Arrays.asList(words)));
+
+                for(int i=0; i<words.length; i++){
+                    if(weightVector.get(words[i])==null){
+                        weightVector.put(words[i], 0);
+                    }
+                }
+            }
+        }
+        return weightVector;
     }
 
     public void stringToHash(String input, HashMap<String, Integer> hash){
@@ -78,10 +94,6 @@ public class DataProcessing {
                 hash.put(words[i], newValue);
             }
         }
-    }
-
-    public double idf(DataModel dm, String term){
-    return 0.0;
     }
 
 }
