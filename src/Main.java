@@ -5,8 +5,8 @@ public class Main {
 
     public static final String positiveDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\pos";
     public static final String negativeDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\neg";
-    private static HashMap<String, Integer> weightVector;
-    private static HashMap<String, Integer> defaultFeatureVector;
+    private static HashMap<String, Double> weightVector;
+    private static HashMap<String, Double> defaultFeatureVector;
     private ArrayList<DataModel> trainingDocs;
     private ArrayList<DataModel> testingDocs;
 
@@ -25,10 +25,9 @@ public class Main {
             TFIDFCalculator tfidfCalculator = new TFIDFCalculator();
             double sum = 0;
             for(String word: dm.getContent()){
-                sum += tfidfCalculator.tfIdf(dm, dataProcessing.getTrainingDocs(), word);
-
+                double temp = tfidfCalculator.tfIdf(dm, dataProcessing.getTrainingDocs(), word);
+                defaultFeatureVector.put(word, temp);
             }
-            System.out.println(sum);
             System.out.println("File: " + dm.getPath());
         }
         /*trainingData = dataProcessing.getTrainingData();
