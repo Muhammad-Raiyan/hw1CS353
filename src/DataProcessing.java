@@ -12,7 +12,7 @@ public class DataProcessing {
     private InputData inputData;
     HashMap<String, Integer> trainingData = new HashMap<String, Integer>();
     HashMap<String, Integer> testingData = new HashMap<String, Integer>();
-    HashMap<String, Integer> weightVector = new HashMap<String, Integer>();
+    HashMap<String, Double> weightVector = new HashMap<>();
 
     public DataProcessing(InputData inputData) {
         this.fileList = inputData.getFileList();
@@ -63,7 +63,7 @@ public class DataProcessing {
         return testingData;
     }
 
-    public HashMap<String, Integer> getWeightVector(){
+    public HashMap<String, Double> getWeightVector(){
         for(DataModel file: fileList)
         {
             if(!file.isTestData()){
@@ -72,7 +72,7 @@ public class DataProcessing {
                 for(int i=0; i<words.length; i++){
                     words[i] = words[i].replace("\r", "").replace("\n", "");
                     if(weightVector.get(words[i])==null){
-                        weightVector.put(words[i], 0);
+                        weightVector.put(words[i], 0.0);
                     }
                 }
                 file.setContent(new ArrayList<String>(Arrays.asList(words)));
