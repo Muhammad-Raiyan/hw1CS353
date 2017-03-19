@@ -69,13 +69,13 @@ public class DataProcessing {
             if(!file.isTestData()){
                 String review = inputData.readFile(file.getPath());
                 String[] words = review.split(" ");
-                file.setContent(new ArrayList<String>(Arrays.asList(words)));
-
                 for(int i=0; i<words.length; i++){
+                    words[i] = words[i].replace("\r", "").replace("\n", "");
                     if(weightVector.get(words[i])==null){
                         weightVector.put(words[i], 0);
                     }
                 }
+                file.setContent(new ArrayList<String>(Arrays.asList(words)));
             }
         }
         return weightVector;
