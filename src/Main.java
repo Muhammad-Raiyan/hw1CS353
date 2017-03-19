@@ -4,13 +4,23 @@ import java.util.*;
 public class Main {
 
     public static final String positiveDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\pos";
-    public final String negativeDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\neg";
+    public static final String negativeDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\neg";
+    private static HashMap<String, Integer> trainingData;
+    private static HashMap<String, Integer> testingData;
 
     public static void main(String[] args) {
-        InputData in = new InputData(Paths.get(positiveDir));
-        HashMap<String, Integer> positive = in.getInputMap();
-        Map<String, Integer> sortedPositive = sortMapByValue(positive);
 
+        InputData inputData = new InputData();
+        inputData.loadFileNames(Paths.get(positiveDir), true);
+        inputData.loadFileNames(Paths.get(negativeDir), false);
+
+        DataProcessing dataProcessing = new DataProcessing(inputData);
+        dataProcessing.runCrossValidation(1);
+        trainingData = dataProcessing.getTrainingData();
+        testingData = dataProcessing.getTestingData();
+        Map<String, Integer> sortedTrainingData = sortMapByValue(trainingData);
+        Map<String, Integer> sortedTestingData = sortMapByValue(testingData);
+        System.out.println("Hello");
     }
 
     private static Map<String, Integer> sortMapByValue(Map<String, Integer> unsortedMap){

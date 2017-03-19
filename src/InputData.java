@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.stream.Stream;
 
 /**
@@ -12,15 +12,20 @@ import java.util.stream.Stream;
  * @author ishmam
  */
 public class InputData {
-    HashMap<String, Integer> inputMap = new HashMap<String, Integer>();
+    ArrayList<DataModel> fileList = new ArrayList<>();
 
-    public InputData(Path folder) {
+    public InputData() {
+    }
+
+    public void loadFileNames(Path folder, boolean isPos){
 
         try(Stream<Path> paths = Files.walk(folder)) {
             paths.forEach(filePath -> {
                 if(Files.isRegularFile(filePath)){
                     System.out.println("Path: " + filePath);
-                    readFile(filePath);
+                    DataModel dm = new DataModel(filePath, isPos);
+                    fileList.add(dm);
+                    //readFile(filePath);
                 }
             });
         } catch (IOException e) {
@@ -28,7 +33,8 @@ public class InputData {
         }
     }
 
-    public void readFile(Path file){
+    public String readFile(Path file){
+        String fullFile = null;
         try(BufferedReader br = new BufferedReader(new FileReader(String.valueOf(file)))) {
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
@@ -38,29 +44,16 @@ public class InputData {
                 sb.append(System.lineSeparator());
                 line = br.readLine();
             }
-            String fullFile = sb.toString();
-            stringToHash(fullFile);
+            fullFile = sb.toString();
+            //stringToHash(fullFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return fullFile;
     }
 
-    public void stringToHash(String input){
-        String[] words = input.split(" ");
 
-        for(int i = 0; i<words.length; i++){
-            if(inputMap.get(words[i]) == null){
-                inputMap.put(words[i], 1);
-            }
-            else {
-                int newValue = Integer.valueOf(String.valueOf(inputMap.get(words[i])));
-                newValue++;
-                inputMap.put(words[i], newValue);
-            }
-        }
-    }
-
-    public HashMap<String, Integer> getInputMap() {
-        return inputMap;
+    public ArrayList<DataModel> getFileList() {
+        return fileList;
     }
 }
