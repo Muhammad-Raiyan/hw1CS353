@@ -21,6 +21,7 @@ public class Main {
         Map<String, Integer> sortedTrainingData = sortMapByValue(trainingData);
         Map<String, Integer> sortedTestingData = sortMapByValue(testingData);
         System.out.println("Hello");
+        System.out.println(sortedTestingData);
     }
 
     private static Map<String, Integer> sortMapByValue(Map<String, Integer> unsortedMap){
