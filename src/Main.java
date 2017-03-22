@@ -5,6 +5,7 @@ public class Main {
 
     public static final String positiveDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\pos";
     public static final String negativeDir = "C:\\Users\\ishmam\\Documents\\Programming\\hw1CS353\\data\\neg";
+    public static HashMap<String, Double> weightVector = new HashMap<>();
     private static HashMap<String, Integer> trainingData;
     private static HashMap<String, Integer> testingData;
 
