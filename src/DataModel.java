@@ -1,5 +1,6 @@
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by ishmam on 3/18/2017.
@@ -11,10 +12,19 @@ public class DataModel {
     private boolean isPos;
     private boolean isTestData;
     private ArrayList<String> content;
+    private HashMap<String, Double> featurevector;
 
     public DataModel(Path path, boolean isPos) {
         this.path = path;
         this.isPos = isPos;
+    }
+
+    public HashMap<String, Double> getFeaturevector() {
+        return featurevector;
+    }
+
+    public void setFeaturevector(HashMap<String, Double> featurevector) {
+        this.featurevector = featurevector;
     }
 
     public ArrayList<String> getContent() {
@@ -44,7 +54,12 @@ public class DataModel {
         return isTestData;
     }
 
+    public boolean isTrainingData() {
+        return !isTestData;
+    }
+
     public void setTestData(boolean testData) {
         isTestData = testData;
     }
+
 }

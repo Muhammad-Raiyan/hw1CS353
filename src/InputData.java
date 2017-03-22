@@ -11,6 +11,7 @@ import java.util.stream.Stream;
  *
  * @author ishmam
  */
+
 public class InputData {
     ArrayList<DataModel> fileList = new ArrayList<>();
 

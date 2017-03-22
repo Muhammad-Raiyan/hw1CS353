@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -7,6 +8,12 @@ import java.util.List;
  * @author ishmam
  */
 public class TFIDFCalculator {
+
+    private final HashMap<String, Double> idfMap;
+
+    public TFIDFCalculator(HashMap<String, Double> idfMap) {
+        this.idfMap = idfMap;
+    }
 
     public double tf(DataModel dm, String term) {
         double result = 0;
@@ -47,7 +54,21 @@ public class TFIDFCalculator {
 
 
     public double tfIdf(DataModel file, ArrayList<DataModel> docs, String term) {
-        return tf(file, term) * idf(docs, term);
+        double tfValue = tf(file, term);
+        double idfValue = 0.0;
+        if(idfMap.get(term)==null){
+            idfValue = idf(docs, term);
+            idfMap.put(term, idfValue);
+        }
+        else {
+            idfValue = idfMap.get(term);
+        }
 
+        return tfValue*idfValue;
+
+    }
+
+    public HashMap<String, Double> getIdfMap() {
+        return idfMap;
     }
 }
