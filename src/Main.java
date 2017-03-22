@@ -47,10 +47,7 @@ public class Main {
            Perceptron perceptron = new Perceptron(dm.getFeaturevector(), weightVector, dm.isPos());
 
         }
-        /*trainingData = dataProcessing.getTrainingData();
-        testingData = dataProcessing.getTestingData();
-        Map<String, Integer> sortedTrainingData = sortMapByValue(trainingData);
-        Map<String, Integer> sortedTestingData = sortMapByValue(testingData);*/
+
         System.out.println("Perceptron Finished");
     }
 
