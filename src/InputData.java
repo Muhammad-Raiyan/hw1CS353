@@ -23,7 +23,7 @@ public class InputData {
         try(Stream<Path> paths = Files.walk(folder)) {
             paths.forEach(filePath -> {
                 if(Files.isRegularFile(filePath)){
-                    System.out.println("Path: " + filePath);
+                    //System.out.println("Path: " + filePath);
                     DataModel dm = new DataModel(filePath, isPos);
                     fileList.add(dm);
                     //readFile(filePath);

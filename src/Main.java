@@ -24,29 +24,41 @@ public class Main {
         defaultFeatureVector = new HashMap<>(weightVector);
         idfMap = new HashMap<>();
 
-        int i=0;
+        double error = 0.0;
         TFIDFCalculator tfidfCalculator = new TFIDFCalculator(idfMap);
         ArrayList<DataModel> trainingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTrainingData).collect(Collectors.toList());
 
-        for(DataModel dm : trainingDataList){
-            double sum = 0;
-            dm.setFeaturevector(defaultFeatureVector);
+        boolean initial = true;
 
-            for (String word : dm.getContent()) {
-                double temp = tfidfCalculator.tfIdf(dm, trainingDataList, word);
-                dm.getFeaturevector().put(word, temp);
-                sum += temp;
+        for(int epoch = 0; epoch <1000; epoch++) {
+            int i=0;
+            for (DataModel dm : trainingDataList) {
+                i++;
+                if (initial) {
+                    double sum = 0;
+                    dm.setFeaturevector(defaultFeatureVector);
+
+                    for (String word : dm.getContent()) {
+                        double temp = tfidfCalculator.tfIdf(dm, trainingDataList, word);
+                        dm.getFeaturevector().put(word, temp);
+                        sum += temp;
+                    }
+                }
+
+                Perceptron perceptron = new Perceptron(dm.getFeaturevector(), weightVector, dm.isPos(), dm);
+
+                error += Math.abs(perceptron.train());
+                //System.out.println(++i + "th sum: " + sum + " idfMapSize: " + idfMap.size());
+                //temp =  (error / i);
+                if (i % 10 == 0) System.out.println(i + "th error: " + error / i + " epoch: " + epoch);
             }
-            //System.out.println("File: " + dm.getPath());
-            System.out.println(++i + "th sum: " + sum + "idfMapSize: " + idfMap.size());
-
+            if(epoch==0) initial = false;
+            double result = error/1600;
+            System.out.println("Error: "+ result + " Epoch: " + epoch + " T: " + result);
+            if(result<1.5) break;
+            error = 0.0;
         }
 
-        for(DataModel dm: trainingDataList){
-
-           Perceptron perceptron = new Perceptron(dm.getFeaturevector(), weightVector, dm.isPos());
-
-        }
 
         System.out.println("Perceptron Finished");
     }
