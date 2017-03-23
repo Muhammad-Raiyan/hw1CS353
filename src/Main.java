@@ -11,8 +11,8 @@ public class Main {
     private static HashMap<String, Double> weightVector;
     private static HashMap<String, Double> defaultFeatureVector;
     public  static HashMap<String, Double> idfMap;
-    private ArrayList<DataModel> trainingDocs;
-    private ArrayList<DataModel> testingDocs;
+    private static ArrayList<DataModel> trainingDataList;
+    private static ArrayList<DataModel> testingDataList;
 
     public static void main(String[] args) {
 
@@ -21,17 +21,24 @@ public class Main {
         inputData.loadFileNames(Paths.get(negativeDir), false);
 
         DataProcessing dataProcessing = new DataProcessing(inputData);
-        dataProcessing.runCrossValidation(1);
-        weightVector = dataProcessing.getWeightVector();
-        defaultFeatureVector = new HashMap<>(weightVector);
-        idfMap = new HashMap<>();
 
+        for(int i=0; i<5; i++) {
+            dataProcessing.runCrossValidation(i);
+            weightVector = dataProcessing.getWeightVector();
+            defaultFeatureVector = new HashMap<>(weightVector);
+            idfMap = new HashMap<>();
+            initPreprocess(inputData, dataProcessing);
+            PerceptronController perceptronController = new PerceptronController(inputData, weightVector, trainingDataList, testingDataList);
+            System.out.println("N: " + i);
+            perceptronController.startTraining();
+        }
+    }
 
+    private static void initPreprocess(InputData inputData, DataProcessing dataProcessing) {
         TFIDFCalculator tfidfCalculator = new TFIDFCalculator(idfMap);
-        ArrayList<DataModel> trainingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTrainingData).collect(Collectors.toList());
-        ArrayList<DataModel> testingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTestData).collect(Collectors.toList());
+        trainingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTrainingData).collect(Collectors.toList());
+        testingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTestData).collect(Collectors.toList());
 
-        // preprocessing
         System.out.println("Prepreprocessing: ");
         int count = 0;
         for (DataModel dm : trainingDataList) {
@@ -45,59 +52,16 @@ public class Main {
                 sum += temp;
             }
 
-            if(count%160 == 0) System.out.print((count/1600.00)*100 + "% ->");
+            if(count%160 == 0) System.out.print((count/1600.00)*100 + "% -> ");
 
         }
 
-        // perceptron training
-        double error = 0.0;
-        for(int epoch = 0; epoch <1000; epoch++) {
-            int i=0;
-            for (DataModel dm : trainingDataList) {
-                i++;
-                perceptron = new Perceptron(dm.getFeaturevector(), weightVector, dm.isPos(), dm);
-                error += Math.abs(perceptron.train());
-                //if (i % 100 == 0) System.out.println(i + "th error: " + error / i + " epoch: " + epoch);
-            }
-            double result = error/1600;
-            System.out.println("Error: "+ result + " Epoch: " + epoch + " T: " + result);
-            if(result<1.5) break;
-            error = 0.0;
-        }
-
-        System.out.println("Training Finished");
-
-        double tp = 0, fp = 0, tn = 0, fn = 0;
         for(DataModel dm: testingDataList){
             HashMap<String, Double> testingData = dataProcessing.getTestingData(dm);
             ArrayList<String> content =  new ArrayList<>(testingData.keySet());
             dm.setContent(content);
-            HashMap<String, Double> temp = new HashMap<>();
             dm.setFeaturevector(testingData);
-            double result = perceptron.test(dm);
-            if(result > 0){
-                if(dm.isPos()) tp++;
-                else fp++;
-            }
-            else {
-                if(dm.isPos()) fn++;
-                else tn++;
-            }
-            /*System.out.println(perceptron.test(dm));
-            System.out.println(dm.getPath());
-            System.out.println(dm.isPos()? "Positive" : "Negative");*/
         }
-        double precisionP = tp/(tp+fp);
-        double precisionN = tn/(tn+fp);
-        double recallP = tp / (tp+fn);
-        double recallN = tn / (tn+fp);
-        double accuracy = (tp+tn)/(tp+tn+fp+fn);
-        double precision = (precisionP+precisionN)/2.0;
-        double recall = (recallN + recallP) / 2.0;
-        System.out.println("Accuracy: " + accuracy*100 + "%");
-        System.out.println("Precision: " + precision*100 + "%");
-        System.out.println("Recall: " + recall*100 + "%");
-
     }
 
     private static Map<String, Integer> sortMapByValue(Map<String, Integer> unsortedMap){

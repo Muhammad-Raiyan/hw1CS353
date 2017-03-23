@@ -23,7 +23,7 @@ public class Perceptron {
 
     private void init() {
         bias = 0.0;
-        learningRate = .25;
+        learningRate = .2;
     }
 
     public double train(){
@@ -47,9 +47,9 @@ public class Perceptron {
         double sum = 0.0;
 
         for(String key:dm.getContent()){
-            sum += (inputVector.get(key)*weightVector.get(key));
+            sum += ((inputVector.get(key)*weightVector.get(key)));
         }
-
+        sum+=bias;
         return sum>0? 1:-1;
     }
 

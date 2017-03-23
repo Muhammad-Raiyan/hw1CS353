@@ -24,7 +24,7 @@ public class DataProcessing {
         Collections.shuffle(fileList, new Random(seed));
 
         int[] begin = {0, 400, 800, 1200, 1600};
-        int[] end = {399, 799, 1199, 1599, 2000};
+        int[] end = {399, 799, 1199, 1599, 1999};
 
         // set all files as training data
         for(DataModel x: fileList){
