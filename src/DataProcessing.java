@@ -11,7 +11,7 @@ public class DataProcessing {
     private ArrayList<DataModel> fileList;
     private InputData inputData;
     HashMap<String, Integer> trainingData = new HashMap<String, Integer>();
-    HashMap<String, Integer> testingData = new HashMap<String, Integer>();
+    HashMap<String, Double> testingData = new HashMap<>();
     HashMap<String, Double> weightVector = new HashMap<>();
 
     public DataProcessing(InputData inputData) {
@@ -51,16 +51,10 @@ public class DataProcessing {
         return trainingDocs;
     }
 
-    public HashMap<String, Integer> getTestingData (){
+    public HashMap<String, Double> getTestingData (DataModel dm){
 
-        fileList.forEach(file ->{
-            if(file.isTestData()){
-                String review = inputData.readFile(file.getPath());
-                stringToHash(review, testingData);
-            }
-        });
-
-        return testingData;
+        String content = inputData.readFile(dm.getPath());
+        return stringToHash(content);
     }
 
     public HashMap<String, Double> getWeightVector(){
@@ -81,19 +75,22 @@ public class DataProcessing {
         return weightVector;
     }
 
-    public void stringToHash(String input, HashMap<String, Integer> hash){
+    public HashMap<String, Double> stringToHash(String input){
         String[] words = input.split(" ");
+        HashMap<String, Double> hash = new HashMap<>();
 
         for(int i = 0; i<words.length; i++){
+            words[i] = words[i].replace("\r", "").replace("\n", "");
             if(hash.get(words[i]) == null){
-                hash.put(words[i], 1);
+                hash.put(words[i], 1.0);
             }
             else {
-                int newValue = Integer.valueOf(String.valueOf(hash.get(words[i])));
-                newValue++;
+                double newValue = Double.valueOf(String.valueOf(hash.get(words[i])));
+                newValue+=1.0;
                 hash.put(words[i], newValue);
             }
         }
+        return hash;
     }
 
 }

@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -37,7 +36,7 @@ public class Perceptron {
         double error = 0.0;
         for(String key:dm.getContent()){
             error += (desiredResponse - actualResponse);
-            double delta = (desiredResponse-actualResponse)*inputVector.get(key);
+            double delta = learningRate*(desiredResponse-actualResponse)*inputVector.get(key);
             double newWeight = weightVector.get(key)+delta;
             weightVector.put(key, newWeight);
         }
@@ -51,14 +50,15 @@ public class Perceptron {
             sum += (inputVector.get(key)*weightVector.get(key));
         }
 
-        return sum;
+        return sum>0? 1:-1;
     }
 
-    public double test(ArrayList<String> testingVector){
+    public double test(DataModel testingVector){
         double sum = 0.0;
-        for (String key:testingVector){
+        for (String key:testingVector.getContent()){
             if(weightVector.containsKey(key)){
-                sum+= (weightVector.get(key));
+                double temp = (weightVector.get(key)*testingVector.getFeaturevector().get(key));
+                sum= sum + temp;
             }
         }
         return sum;
