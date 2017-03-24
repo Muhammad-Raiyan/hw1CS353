@@ -25,7 +25,7 @@ public class PerceptronController {
 
     public void startTraining(){
         double error = 0.0;
-        for(int epoch = 0; epoch <1000; epoch++) {
+        for(int epoch = 0; epoch <50; epoch++) {
             int i=0;
             for (DataModel dm : trainingDataList) {
                 i++;
@@ -34,15 +34,17 @@ public class PerceptronController {
                 //if (i % 100 == 0) System.out.println(i + "th error: " + error / i + " epoch: " + epoch);
             }
             double result = error/1600;
-            if(result == 0.0) {
-                System.out.println("Underflow");
-                continue;
-            }
-            System.out.println();
-            startTesting();
-            System.out.println("Error: "+ result + " Epoch: " + epoch);
 
-            if(result<3 || epoch>50) {
+
+            double sWeight = 0.0;
+            for(Double weight: weightVector.values()){
+                sWeight+=weight;
+            }
+            //System.out.println("sWeight: " + sWeight/weightVector.values().size());
+            //startTesting();
+            if(result< 30) {
+                System.out.println();
+                System.out.println("Error: "+ result + " Epoch: " + epoch);
                 break;
             }
 
@@ -50,11 +52,13 @@ public class PerceptronController {
         }
     }
 
-    public void startTesting(){
+    public HashMap<String, Double> startTesting(){
         double tp = 0, fp = 0, tn = 0, fn = 0;
+        double temp = 0.0;
         for(DataModel dm: testingDataList){
             double result = perceptron.test(dm);
-            if(result > 0){
+            temp+=result;
+            if(result > 2){
                 if(dm.isPos()) tp++;
                 else fp++;
             }
@@ -62,9 +66,6 @@ public class PerceptronController {
                 if(dm.isPos()) fn++;
                 else tn++;
             }
-            /*System.out.println(perceptron.test(dm));
-            System.out.println(dm.getPath());
-            System.out.println(dm.isPos()? "Positive" : "Negative");*/
         }
         double precisionP = tp/(tp+fp);
         double precisionN = tn/(tn+fp);
@@ -74,8 +75,15 @@ public class PerceptronController {
         double precision = (precisionP+precisionN)/2.0;
         double recall = (recallN + recallP) / 2.0;
         //if(accuracy<.6) return;
-        System.out.println("Accuracy: " + accuracy*100 + "%");
-        System.out.println("Precision: " + precision*100 + "%");
-        System.out.println("Recall: " + recall*100 + "%");
+        System.out.println("TP - FP - TN - FN: " + tp + " " + fp + " " + tn + " " + fn);
+        System.out.println("Accuracy: " + String.format("%.4f", accuracy));
+        System.out.println("Precision: " + String.format("%.4f", precision));
+        System.out.println("Recall: " + String.format("%.4f", recall));
+        System.out.println();
+        HashMap<String, Double> res = new HashMap<>();
+        res.put("Accuracy", accuracy);
+        res.put("Precision", precision);
+        res.put("Recall", recall);
+        return res;
     }
 }
