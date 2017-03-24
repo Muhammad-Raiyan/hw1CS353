@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Random;
 import java.util.stream.Stream;
 
 /**
@@ -56,5 +58,10 @@ public class InputData {
 
     public ArrayList<DataModel> getFileList() {
         return fileList;
+    }
+
+    public void shuffle(){
+        long seed = System.nanoTime();
+        Collections.shuffle(fileList, new Random(seed));
     }
 }

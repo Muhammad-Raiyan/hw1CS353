@@ -14,9 +14,12 @@ public class DataModel {
     private ArrayList<String> content;
     private HashMap<String, Double> featurevector;
 
+    private HashMap<String, Double> tfMap;
+
     public DataModel(Path path, boolean isPos) {
         this.path = path;
         this.isPos = isPos;
+        tfMap = new HashMap<>();
     }
 
     public HashMap<String, Double> getFeaturevector() {
@@ -60,6 +63,14 @@ public class DataModel {
 
     public void setTestData(boolean testData) {
         isTestData = testData;
+    }
+
+    public HashMap<String, Double> getTfMap() {
+        return tfMap;
+    }
+
+    public void setTfMap(HashMap<String, Double> tfMap) {
+        this.tfMap = tfMap;
     }
 
 }

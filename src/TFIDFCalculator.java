@@ -11,6 +11,10 @@ public class TFIDFCalculator {
 
     private final HashMap<String, Double> idfMap;
 
+    public TFIDFCalculator() {
+        idfMap = null;
+    }
+
     public TFIDFCalculator(HashMap<String, Double> idfMap) {
         this.idfMap = idfMap;
     }
@@ -18,11 +22,17 @@ public class TFIDFCalculator {
     public double tf(DataModel dm, String term) {
         double result = 0;
 
+        if(dm.getTfMap().get(term)!=null){
+            return dm.getTfMap().get(term);
+        }
+
         List<String> file = dm.getContent();
         for (String word : file) {
             if (term.equalsIgnoreCase(word))
                 result++;
         }
+        dm.getTfMap().put(term, result/file.size());
+
         return result / file.size();
     }
 
@@ -49,6 +59,7 @@ public class TFIDFCalculator {
        /* catch (NullPointerException e){
             e.printStackTrace();
         }*/
+
         return Math.log(docs.size() / n);
     }
 

@@ -19,19 +19,29 @@ public class Main {
         InputData inputData = new InputData();
         inputData.loadFileNames(Paths.get(positiveDir), true);
         inputData.loadFileNames(Paths.get(negativeDir), false);
+        inputData.shuffle();
+        double accuracy = 0, precision = 0, recall = 0;
 
         DataProcessing dataProcessing = new DataProcessing(inputData);
 
         for(int i=0; i<5; i++) {
+            System.out.println("N: " + i);
             dataProcessing.runCrossValidation(i);
             weightVector = dataProcessing.getWeightVector();
             defaultFeatureVector = new HashMap<>(weightVector);
             idfMap = new HashMap<>();
             initPreprocess(inputData, dataProcessing);
             PerceptronController perceptronController = new PerceptronController(inputData, weightVector, trainingDataList, testingDataList);
-            System.out.println("N: " + i);
             perceptronController.startTraining();
+            HashMap<String, Double> tempHash = perceptronController.startTesting();
+            accuracy += tempHash.get("Accuracy");
+            precision += tempHash.get("Precision");
+            recall += tempHash.get("Recall");
         }
+
+        System.out.println("Average Accuracy: " + String.format("%.3f", accuracy/5.0));
+        System.out.println("Average Precision: " + String.format("%.3f", precision/5.0));
+        System.out.println("Average Recall: " + String.format("%.3f", recall/5.0));
     }
 
     private static void initPreprocess(InputData inputData, DataProcessing dataProcessing) {
@@ -39,7 +49,7 @@ public class Main {
         trainingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTrainingData).collect(Collectors.toList());
         testingDataList = (ArrayList<DataModel>) inputData.getFileList().stream().filter(DataModel::isTestData).collect(Collectors.toList());
 
-        System.out.println("Prepreprocessing: ");
+        System.out.print("Prepreprocessing: ");
         int count = 0;
         for (DataModel dm : trainingDataList) {
             count++;
@@ -58,8 +68,6 @@ public class Main {
 
         for(DataModel dm: testingDataList){
             HashMap<String, Double> testingData = dataProcessing.getTestingData(dm);
-            ArrayList<String> content =  new ArrayList<>(testingData.keySet());
-            dm.setContent(content);
             dm.setFeaturevector(testingData);
         }
     }

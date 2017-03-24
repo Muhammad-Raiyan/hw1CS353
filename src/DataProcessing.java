@@ -20,8 +20,6 @@ public class DataProcessing {
     }
 
     public void runCrossValidation(int N){
-        long seed = System.nanoTime();
-        Collections.shuffle(fileList, new Random(seed));
 
         int[] begin = {0, 400, 800, 1200, 1600};
         int[] end = {399, 799, 1199, 1599, 1999};
@@ -35,6 +33,7 @@ public class DataProcessing {
         for(int i=begin[N]; i<=end[N]; i++){
             DataModel dm = fileList.get(i);
             dm.setTestData(true);
+            dm.setFeaturevector(null);
             fileList.set(i, dm);
         }
     }
@@ -52,9 +51,27 @@ public class DataProcessing {
     }
 
     public HashMap<String, Double> getTestingData (DataModel dm){
+        HashMap<String, Double> hash = new HashMap<>();
+        TFIDFCalculator tfidfCalculator = new TFIDFCalculator();
 
         String content = inputData.readFile(dm.getPath());
-        return stringToHash(content);
+        String[] words = content.split(" ");
+        ArrayList<String> dmcontent = new ArrayList<>(Arrays.asList(words));
+        dm.setContent(dmcontent);
+
+        for(int i=0; i<words.length; i++){
+            if(!hash.containsKey(words[i])) {
+                //double value = tfidfCalculator.tf(dm, words[i]);
+                double value = 1.0;
+                hash.put(words[i], value);
+            }
+            else {
+                double newValue = Double.valueOf(String.valueOf(hash.get(words[i])));
+                newValue+=1.0;
+                hash.put(words[i], newValue);
+            }
+        }
+        return hash;
     }
 
     public HashMap<String, Double> getWeightVector(){

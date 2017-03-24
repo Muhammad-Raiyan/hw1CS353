@@ -9,7 +9,7 @@ public class Perceptron {
 
     public static HashMap<String, Double> weightVector;
     HashMap<String, Double> inputVector;
-    double bias;
+    double bias, threshold;
     double actualResponse, desiredResponse, learningRate;
     DataModel dm;
 
@@ -24,6 +24,7 @@ public class Perceptron {
     private void init() {
         bias = 0.0;
         learningRate = .2;
+        threshold = 1;
     }
 
     public double train(){
@@ -57,8 +58,7 @@ public class Perceptron {
         double sum = 0.0;
         for (String key:testingVector.getContent()){
             if(weightVector.containsKey(key)){
-                double temp = (weightVector.get(key)*testingVector.getFeaturevector().get(key));
-                sum= sum + temp;
+                sum+= (weightVector.get(key));
             }
         }
         return sum;
