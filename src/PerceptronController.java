@@ -58,7 +58,7 @@ public class PerceptronController {
         for(DataModel dm: testingDataList){
             double result = perceptron.test(dm);
             //temp+=result;
-            if(result > 1){
+            if(result > 2){
                 if(dm.isPos()) tp++;
                 else fp++;
             }
