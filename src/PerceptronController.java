@@ -36,10 +36,10 @@ public class PerceptronController {
             double result = error/1600;
 
 
-            double sWeight = 0.0;
+            /*double sWeight = 0.0;
             for(Double weight: weightVector.values()){
                 sWeight+=weight;
-            }
+            }*/
             //System.out.println("sWeight: " + sWeight/weightVector.values().size());
             //startTesting();
             if(result< 30) {
@@ -54,11 +54,11 @@ public class PerceptronController {
 
     public HashMap<String, Double> startTesting(){
         double tp = 0, fp = 0, tn = 0, fn = 0;
-        double temp = 0.0;
+        //double temp = 0.0;
         for(DataModel dm: testingDataList){
             double result = perceptron.test(dm);
-            temp+=result;
-            if(result > 2){
+            //temp+=result;
+            if(result > 1){
                 if(dm.isPos()) tp++;
                 else fp++;
             }
