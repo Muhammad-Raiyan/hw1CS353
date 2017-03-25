@@ -7,24 +7,5 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/../lib/jackson-annotations-2.8.2.jar!/" />
-          <root url="jar://$MODULE_DIR$/../lib/jackson-core-2.8.2.jar!/" />
-          <root url="jar://$MODULE_DIR$/../lib/jackson-databind-2.8.2.jar!/" />
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://$MODULE_DIR$/../lib/jackson-annotations-2.8.2-javadoc.jar!/" />
-          <root url="jar://$MODULE_DIR$/../lib/jackson-core-2.8.2-javadoc.jar!/" />
-          <root url="jar://$MODULE_DIR$/../lib/jackson-databind-2.8.2-javadoc.jar!/" />
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://$MODULE_DIR$/../lib/jackson-annotations-2.8.2-sources.jar!/" />
-          <root url="jar://$MODULE_DIR$/../lib/jackson-core-2.8.2-sources.jar!/" />
-          <root url="jar://$MODULE_DIR$/../lib/jackson-databind-2.8.2-sources.jar!/" />
-        </SOURCES>
-      </library>
-    </orderEntry>
   </component>
 </module>
