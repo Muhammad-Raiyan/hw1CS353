@@ -1,8 +1,4 @@
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.*;
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -108,19 +104,5 @@ public class ProcessingMain {
         Scanner sc = new Scanner(System.in);
         System.out.println();
         return sc.nextInt();
-    }
-
-    private static void writeTOJson() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        try(OutputStream out = new FileOutputStream(target)) {
-            JsonGenerator generator = objectMapper.getFactory().createGenerator(out);
-            generator.setPrettyPrinter(new DefaultPrettyPrinter());
-            objectMapper.writeValue(target, tfMap);
-        }
-        catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
