@@ -50,7 +50,6 @@ public class ReadFile {
         return fullFile;
     }
     public void shuffle(){
-        long seed = System.nanoTime();
-        //Collections.shuffle(fileList, new Random(seed));
+
     }
 }
