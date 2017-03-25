@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Preprocessing/Preprocessing.iml" filepath="$PROJECT_DIR$/Preprocessing/Preprocessing.iml" />
       <module fileurl="file://$PROJECT_DIR$/hw1CS353.iml" filepath="$PROJECT_DIR$/hw1CS353.iml" />
     </modules>
   </component>
