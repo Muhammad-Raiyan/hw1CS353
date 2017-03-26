@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Preprocess {
 
     private ArrayList<DataModel> fileList;
-    private HashMap<String, Double> weightVector;
+    private HashMap<String, Double> weightVector = new HashMap<>();
     public HashMap<String, Double> calculateTF(String[] content){
 
         String temp[] = content;
@@ -54,7 +54,7 @@ public class Preprocess {
     }
 
     public HashMap<String, Double> getWeightVector(){
-        weightVector = new HashMap<>();
+        //weightVector = new HashMap<>();
         for(DataModel file: fileList){
             if(file.isTrainingData()){
                 for(String key : file.getContent()){
