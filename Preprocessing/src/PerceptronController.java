@@ -8,7 +8,6 @@ import java.util.HashMap;
  */
 public class PerceptronController {
 
-    //private ReadFile inputData;
     private HashMap<String, Double> weightVector;
 
     private ArrayList<DataModel> trainingDataList;
@@ -17,7 +16,6 @@ public class PerceptronController {
     private  Perceptron perceptron;
 
     public PerceptronController(HashMap<String, Double> weightVector, ArrayList<DataModel> trainingDataList, ArrayList<DataModel> testingDataList) {
-        //this.inputData = inputData;
         this.weightVector = weightVector;
         this.trainingDataList = trainingDataList;
         this.testingDataList = testingDataList;
@@ -33,32 +31,22 @@ public class PerceptronController {
                 error += Math.abs(perceptron.train());
                 //if (i % 100 == 0) System.out.println(i + "th error: " + error / i + " epoch: " + epoch);
             }
-            double result = error/1600;
+            double result = error;
 
-
-            /*double sWeight = 0.0;
-            for(Double weight: weightVector.values()){
-                sWeight+=weight;
-            }*/
-            //System.out.println("sWeight: " + sWeight/weightVector.values().size());
-            //startTesting();
             if(result< 30) {
                 System.out.println();
                 System.out.println("Error: "+ result + " Epoch: " + epoch);
                 break;
             }
-
             error = 0.0;
         }
     }
 
     public HashMap<String, Double> startTesting(){
         double tp = 0, fp = 0, tn = 0, fn = 0;
-        //double temp = 0.0;
         for(DataModel dm: testingDataList){
             double result = perceptron.test(dm);
-            //temp+=result;
-            if(result > 2){
+            if(result > 3){
                 if(dm.isPos()) tp++;
                 else fp++;
             }
@@ -74,7 +62,6 @@ public class PerceptronController {
         double accuracy = (tp+tn)/(tp+tn+fp+fn);
         double precision = (precisionP+precisionN)/2.0;
         double recall = (recallN + recallP) / 2.0;
-        //if(accuracy<.6) return;
         System.out.println("TP - FP - TN - FN: " + tp + " " + fp + " " + tn + " " + fn);
         System.out.println("Accuracy: " + String.format("%.4f", accuracy));
         System.out.println("Precision: " + String.format("%.4f", precision));

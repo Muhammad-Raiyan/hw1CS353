@@ -40,7 +40,7 @@ public class BayesClassifier {
 
     public void train(){
         int i = 0, j = 0;
-        System.out.print("Calculating positive class conditional probability: ");
+        System.out.print("Calculating conditional probability(positive): ");
         for(String term:positiveWords){
             i++;
             if(i%50000==0) System.out.print(".");
@@ -50,7 +50,7 @@ public class BayesClassifier {
             }
         }
 
-        System.out.print("\nCalculating negative class conditional probability: ");
+        System.out.print("\nCalculating conditional probability(negative): ");
         for(String term:negativeWords){
             j++;
             if(j%50000==0) System.out.print(".");

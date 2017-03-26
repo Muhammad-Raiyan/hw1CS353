@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Preprocess {
 
     private ArrayList<DataModel> fileList;
-
+    private HashMap<String, Double> weightVector;
     public HashMap<String, Double> calculateTF(String[] content){
 
         String temp[] = content;
@@ -53,8 +53,41 @@ public class Preprocess {
         }
     }
 
+    public HashMap<String, Double> getWeightVector(){
+        weightVector = new HashMap<>();
+        for(DataModel file: fileList){
+            if(file.isTrainingData()){
+                for(String key : file.getContent()){
+                    if(!weightVector.containsKey(key)){
+                        weightVector.put(key, 0.0);
+                    }
+                }
+            }
+        }
+        return weightVector;
+    }
+
 
     public void setFileList(ArrayList<DataModel> fileList) {
         this.fileList = fileList;
+    }
+
+    public double calculateIDF(ArrayList<DataModel> trainingDataList, String term) {
+        double n = 0;
+        for (DataModel dm : trainingDataList) {
+            ArrayList<String> content = dm.getContent();
+            try {
+                for (String word : content) {
+                    if (term.equalsIgnoreCase(word)) {
+                        n++;
+                        break;
+                    }
+                }
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return Math.log(trainingDataList.size() / n);
     }
 }

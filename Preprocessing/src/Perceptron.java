@@ -34,9 +34,9 @@ public class Perceptron {
     }
 
     private double updateWeight(double actualResponse) {
-        double error = 0.0;
+        double error = desiredResponse-actualResponse;
         for(String key:dm.getContent()){
-            error += (desiredResponse - actualResponse);
+            //error += (desiredResponse - actualResponse);
             double delta = learningRate*(desiredResponse-actualResponse)*inputVector.get(key);
             double newWeight = weightVector.get(key)+delta;
             weightVector.put(key, newWeight);
