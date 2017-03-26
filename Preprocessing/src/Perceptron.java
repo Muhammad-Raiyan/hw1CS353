@@ -23,7 +23,7 @@ public class Perceptron {
 
     private void init() {
         bias = 0.0;
-        learningRate = .2;
+        learningRate = .25;
         threshold = 1;
     }
 
