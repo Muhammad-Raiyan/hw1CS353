@@ -25,6 +25,9 @@ public class ProcessingMain {
         ReadFile readFile = new ReadFile();
         pathList.addAll(readFile.loadFileNames(Paths.get(positiveDir)));
         pathList.addAll(readFile.loadFileNames(Paths.get(negativeDir)));
+        long seed = System.nanoTime();
+        Collections.shuffle(pathList, new Random(seed));
+
         if(promptAboutDataMod() == 1) filter = "";
         Preprocess preprocess = new Preprocess();
 
@@ -48,8 +51,6 @@ public class ProcessingMain {
             //tfMap.put(path, preprocess.calculateTF(content));
         }
 
-        long seed = System.nanoTime();
-        Collections.shuffle(fileList, new Random(seed));
         preprocess.setFileList(fileList);
         do {
             int selector = promptAlgorithm();

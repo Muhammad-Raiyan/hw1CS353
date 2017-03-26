@@ -33,7 +33,7 @@ public class PerceptronController {
             }
             double result = error;
 
-            if(result< 30) {
+            if(result< 80) {
                 System.out.println();
                 System.out.println("Error: "+ result + " Epoch: " + epoch);
                 break;
